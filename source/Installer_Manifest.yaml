@@ -1,0 +1,8 @@
+AddonId: 'HeliumWithTabs-8b15c46a-90c2-4fe5-9ebb-1ab25ba7fcb2'
+Packages:
+  - Version: 1.66
+    RequiredApiVersion: 2.7.0
+    ReleaseDate: 2026-02-27
+    PackageUrl: https://github.com/tetj/HeliumWithTabs/releases/download/v3/HeliumWithTabs-8b15c46a-90c2-4fe5-9ebb-1ab25ba7fcb2_1_66.pthm
+    Changelog:
+      - First release

@@ -1,0 +1,246 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                    mc:Ignorable="d">
+
+    <Style TargetType="{x:Type LibraryDetailsView}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type LibraryDetailsView}">
+                    <DockPanel d:DesignWidth="1280" d:DesignHeight="960"
+                               d:DataContext="{x:Static DesignMainViewModel.DesignIntance}">
+                        <Grid DockPanel.Dock="{Settings DetailsListPosition}"
+                              Width="{Settings DetailsListWitdh}">
+                            <Border Background="{DynamicResource LibraryDetailsViewBackgroundBrush}"
+                                    BorderBrush="{DynamicResource PanelSeparatorBrush}">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BorderThickness" Value="0,0,2.5,0" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Settings DetailsListPosition}" Value="Right">
+                                                <Setter Property="BorderThickness" Value="2.5,0,0,0" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Settings ShowPanelSeparators}" Value="False">
+                                                <Setter Property="BorderThickness" Value="0" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid>
+                                    <ExtendedListBox x:Name="PART_ListGames"
+                                         BorderBrush="Transparent" BorderThickness="0"
+                                         ItemContainerStyle="{DynamicResource DetailsViewItemStyle}"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                         ScrollViewer.PanningMode="VerticalOnly">
+                                        <ExtendedListBox.GroupStyle>
+                                            <GroupStyle ContainerStyle="{StaticResource DetailsViewGroupStyle}"/>
+                                        </ExtendedListBox.GroupStyle>
+                                        <ExtendedListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <GameListItem Style="{StaticResource DetailsViewItemTemplate}" />
+                                            </DataTemplate>
+                                        </ExtendedListBox.ItemTemplate>
+                                    </ExtendedListBox>
+                                    <TextBlock FontSize="{StaticResource FontSizeLarge}" Margin="0,15,0,0"
+                                       Text="{DynamicResource LOCNoItemsFound}" TextWrapping="Wrap"                                       
+                                       TextAlignment="Center" HorizontalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Items.Count, ElementName=PART_ListGames, Mode=OneWay}" Value="0">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        <DetailsViewGameOverview x:Name="PART_ControlGameView" DockPanel.Dock="Left" />
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Label" x:Key="HeaderLabel">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLarger}"/>
+        <Setter Property="FontFamily" Value="Corbel"/>
+        <Setter Property="Foreground" Value="{DynamicResource DetailsViewOverviewHeaderLabelBrush}"/>
+        <Setter Property="Typography.Capitals" Value="AllSmallCaps"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Opacity" Value="0.52"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="ContainerLabel">
+        <Setter Property="FontSize" Value="{DynamicResource FontSize}"/>
+        <Setter Property="FontFamily" Value="Corbel"/>
+        <Setter Property="Foreground" Value="{DynamicResource DetailsViewContainerLabelBrush}"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Margin" Value="0,0,20,0"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="HeaderTextBlock">
+        <Setter Property="FontSize" Value="{DynamicResource FontSize}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DetailsViewOverviewHeaderTextBlockBrush}"/>
+        <Setter Property="Opacity" Value="0.32"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="FeedSectionLabel">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLarger}"/>
+        <Setter Property="FontFamily" Value="Corbel"/>
+        <Setter Property="Typography.Capitals" Value="AllSmallCaps"/>
+        <Setter Property="Foreground" Value="#94a1a6"/>
+        <Setter Property="Margin" Value="0,0,0,10" />
+    </Style>
+
+    <Style TargetType="Border" x:Key="OutlineBorder">
+        <Setter Property="Tag" Value="{DynamicResource DetailsViewEnablePanelsDropShadowEffect}" />
+        <Setter Property="Background" Value="{DynamicResource LinksContainerBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="#1A000025" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="Margin" Value="-0.5" />
+        <Setter Property="CornerRadius" Value="2" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Tag}" Value="true">
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect RenderingBias="Performance" BlurRadius="3" ShadowDepth="0" Color="#000025" />
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Border" x:Key="OutlineBorderMainPanels">
+        <Setter Property="Tag" Value="{DynamicResource DetailsViewEnablePanelsDropShadowEffect}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DetailsPanelsBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Tag}" Value="true">
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect RenderingBias="Performance" BlurRadius="3" ShadowDepth="0" Color="#000025" />
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Border" x:Key="OutlineBorderSidePanels">
+        <Setter Property="Tag" Value="{DynamicResource DetailsViewEnablePanelsDropShadowEffect}" />
+        <Setter Property="Background" Value="{DynamicResource SectionContainerBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SectionContainerBorderBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="CornerRadius" Value="2" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Tag}" Value="true">
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect RenderingBias="Performance" BlurRadius="3" ShadowDepth="0" Color="#000025" />
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Border" x:Key="OutlineBorderSidePanelsBorder">
+        <Setter Property="Tag" Value="{DynamicResource DetailsViewEnablePanelsDropShadowEffect}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="#80252a31" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="CornerRadius" Value="2" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Tag}" Value="true">
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect RenderingBias="Performance" BlurRadius="12" ShadowDepth="0" Color="#000025" Opacity="1"/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Border" x:Key="SectionContainerMain">
+        <Setter Property="Background" Value="{DynamicResource SectionContainerMainBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="#1A000025" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="Margin" Value="-0.5" />
+    </Style>
+
+    <Style TargetType="StackPanel" x:Key="PluginStackpanelVisibility">
+        <Setter Property="Tag" Value="False" />
+        <Setter Property="Visibility" Value="Collapsed"/>
+        <Setter Property="Margin" Value="0,0,0,15" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Tag}" Value="True">
+                <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <Style TargetType="ContentControl" x:Key="ControlPanelBoolTagToVisibility">
+        <Setter Property="Visibility" Value="Visible" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}, FallbackValue=true}" Value="false" >
+                <Setter Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}" x:Key="HltbGridTextStyle">
+        <Setter Property="Margin" Value="20,5,0,5" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text, FallbackValue=--}" Value="--">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <DataTemplate x:Key="HltbDataGridTemplate">
+        <DataTemplate.Resources>
+            <Style TargetType="Label" x:Key="HltbGridLabelStyle">
+                <Setter Property="FontSize" Value="{DynamicResource FontSize}"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextBrushDarker}"/>
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="TextBlock" x:Key="HltbGridTextStyle" BasedOn="{StaticResource BaseTextBlockStyle}">
+                <Setter Property="Margin" Value="20,5,0,5" />
+                <Setter Property="Visibility" Value="Visible" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="--">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </DataTemplate.Resources>
+        <GridEx Name="HltbDataGrid" ColumnCount="2" AutoLayoutColumns="2" RowCount="6" Tag="{DynamicResource DetailsViewShowHltbDataGrid}">
+            <Label Content="{DynamicResource LOCHowLongToBeatMainStory}"
+                    Style="{DynamicResource HltbGridLabelStyle}"
+                    Visibility="{Binding ElementName=MainStoryFormat, Path=Visibility}" />
+            <TextBlock Name="MainStoryFormat"
+                       Style="{DynamicResource HltbGridTextStyle}"
+                       Text="{PluginSettings Plugin=HowLongToBeat, Path=MainStoryFormat, FallbackValue='--'}"/>
+
+            <Label Content="{DynamicResource LOCHowLongToBeatMainExtra}"
+                    Style="{DynamicResource HltbGridLabelStyle}"
+                    Visibility="{Binding ElementName=MainExtraFormat, Path=Visibility}" />
+
+            <TextBlock Name="MainExtraFormat"
+                Style="{DynamicResource HltbGridTextStyle}"
+                Text="{PluginSettings Plugin=HowLongToBeat, Path=MainExtraFormat, FallbackValue='--'}"/>
+
+        </GridEx>
+    </DataTemplate>
+</ResourceDictionary>
